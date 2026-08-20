@@ -3,9 +3,10 @@ import React, { useEffect } from 'react';
 interface ToastProps {
     show: boolean;
     onClose: () => void;
+    message?: string;
 }
 
-export const Toast: React.FC<ToastProps> = ({ show, onClose }) => {
+export const Toast: React.FC<ToastProps> = ({ show, onClose, message = 'Já está no bucho! (Copiado)' }) => {
     useEffect(() => {
         if (show) {
             const timer = setTimeout(onClose, 3000);
@@ -25,7 +26,7 @@ export const Toast: React.FC<ToastProps> = ({ show, onClose }) => {
                 ${show ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}
             `}
         >
-            {show ? 'Já está no bucho! (Copiado)' : ''}
+            {show ? message : ''}
         </div>
     );
 };

@@ -4,7 +4,11 @@ import { Controls } from './components/Controls';
 import { OutputBox } from './components/OutputBox';
 import { Toast } from './components/Toast';
 import { generator } from './utils/generator';
-import { Copy, Dice5 } from 'lucide-react';
+import { encodeShareState, decodeShareState, randomSeed, ShareState } from './utils/urlState';
+import { Copy, Dice5, Share2 } from 'lucide-react';
+
+const COPY_MESSAGE = 'Já está no bucho! (Copiado)';
+const LINK_MESSAGE = 'Link copiado! Agora é só espalhar.';
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
@@ -16,7 +20,9 @@ function App() {
         food: true
     });
     const [outputText, setOutputText] = useState<string[]>([]);
+    const [lastGen, setLastGen] = useState<ShareState | null>(null);
     const [showToast, setShowToast] = useState(false);
+    const [toastMessage, setToastMessage] = useState(COPY_MESSAGE);
     const [isAnimating, setIsAnimating] = useState(false);
 
     // Dark Mode Effect
@@ -28,12 +34,30 @@ function App() {
         }
     }, [darkMode]);
 
-    const handleGenerate = () => {
+    // Reproduce a shared generation from the URL on first load (?p=..&s=..).
+    useEffect(() => {
+        const shared = decodeShareState(window.location.search);
+        if (!shared) return;
+        setParagraphs(shared.paragraphs);
+        setIntensity(shared.intensity);
+        setOptions(shared.options);
+        setLastGen(shared);
+        setOutputText(generator.generate(shared.paragraphs, shared.intensity, shared.options, shared.seed));
+    }, []);
+
+    // Generate deterministically from a full state and reflect it in the URL, so the
+    // link in the address bar always reproduces exactly what's on screen.
+    const runGeneration = (state: ShareState) => {
         setIsAnimating(true);
         setTimeout(() => setIsAnimating(false), 600);
-        
-        const text = generator.generate(paragraphs, intensity, options);
-        setOutputText(text);
+
+        setLastGen(state);
+        setOutputText(generator.generate(state.paragraphs, state.intensity, state.options, state.seed));
+        window.history.replaceState(null, '', `${window.location.pathname}?${encodeShareState(state)}`);
+    };
+
+    const handleGenerate = () => {
+        runGeneration({ paragraphs, intensity, options, seed: randomSeed() });
     };
 
     const handleSurprise = () => {
@@ -50,11 +74,7 @@ function App() {
         setParagraphs(p);
         setIntensity(i);
         setOptions(newOptions);
-
-        setIsAnimating(true);
-        setTimeout(() => setIsAnimating(false), 600);
-
-        setOutputText(generator.generate(p, i, newOptions));
+        runGeneration({ paragraphs: p, intensity: i, options: newOptions, seed: randomSeed() });
     };
 
     const handleCopy = async () => {
@@ -67,6 +87,7 @@ function App() {
             } else {
                 throw new Error('Clipboard API unavailable');
             }
+            setToastMessage(COPY_MESSAGE);
             setShowToast(true);
         } catch {
             // Browser blocked the clipboard (e.g. insecure context): fall back to selection.
@@ -78,6 +99,35 @@ function App() {
                 selection?.removeAllRanges();
                 selection?.addRange(range);
             }
+        }
+    };
+
+    const handleShare = async () => {
+        if (!lastGen) return;
+
+        const shareUrl = `${window.location.origin}${window.location.pathname}?${encodeShareState(lastGen)}`;
+        const shareData = {
+            title: 'Lorem Ipsum Tuga',
+            text: 'Olha o chouriço que me saiu no Lorem Ipsum Tuga:',
+            url: shareUrl,
+        };
+
+        if (navigator.share) {
+            try {
+                await navigator.share(shareData);
+            } catch {
+                // User dismissed the share sheet — nothing to do.
+            }
+            return;
+        }
+
+        // No Web Share API (typical on desktop): copy the link instead.
+        try {
+            await navigator.clipboard.writeText(shareUrl);
+            setToastMessage(LINK_MESSAGE);
+            setShowToast(true);
+        } catch {
+            // Clipboard unavailable — silently ignore.
         }
     };
 
@@ -134,12 +184,22 @@ function App() {
                     >
                         <Copy size={24} aria-hidden="true" />
                     </button>
+
+                    <button 
+                        onClick={handleShare}
+                        disabled={!lastGen}
+                        className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-green hover:border-tuga-green hover:-rotate-6 transition-all bg-white dark:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:rotate-0 disabled:hover:text-gray-500 disabled:hover:border-gray-200"
+                        title="Partilhar este chouriço"
+                        aria-label="Partilhar este texto com um link"
+                    >
+                        <Share2 size={24} aria-hidden="true" />
+                    </button>
                 </div>
 
                 <OutputBox text={outputText} />
             </div>
 
-            <Toast show={showToast} onClose={() => setShowToast(false)} />
+            <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} />
         </div>
     )
 }
