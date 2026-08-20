@@ -5,7 +5,7 @@ import { OutputBox } from './components/OutputBox';
 import { Toast } from './components/Toast';
 import { generator } from './utils/generator';
 import { encodeShareState, decodeShareState, randomSeed, ShareState } from './utils/urlState';
-import { Copy, Dice5, Share2 } from 'lucide-react';
+import { Copy, Check, Dice5 } from 'lucide-react';
 
 const COPY_MESSAGE = 'Já está no bucho! (Copiado)';
 const LINK_MESSAGE = 'Link copiado! Agora é só espalhar.';
@@ -24,6 +24,7 @@ function App() {
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState(COPY_MESSAGE);
     const [isAnimating, setIsAnimating] = useState(false);
+    const [justCopied, setJustCopied] = useState(false);
 
     // Dark Mode Effect
     useEffect(() => {
@@ -89,6 +90,8 @@ function App() {
             }
             setToastMessage(COPY_MESSAGE);
             setShowToast(true);
+            setJustCopied(true);
+            setTimeout(() => setJustCopied(false), 1200);
         } catch {
             // Browser blocked the clipboard (e.g. insecure context): fall back to selection.
             const range = document.createRange();
@@ -178,25 +181,36 @@ function App() {
 
                     <button 
                         onClick={handleCopy}
-                        className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-gold hover:border-tuga-gold hover:rotate-6 transition-all bg-white dark:bg-gray-800"
+                        className={`p-4 rounded-xl border-2 transition-all bg-white dark:bg-gray-800
+                            ${justCopied
+                                ? 'border-tuga-green text-tuga-green'
+                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-gold hover:border-tuga-gold hover:rotate-6'}`}
                         title="Copiar para a área de transferência"
                         aria-label="Copiar texto para a área de transferência"
                     >
-                        <Copy size={24} aria-hidden="true" />
-                    </button>
-
-                    <button 
-                        onClick={handleShare}
-                        disabled={!lastGen}
-                        className="p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-green hover:border-tuga-green hover:-rotate-6 transition-all bg-white dark:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:rotate-0 disabled:hover:text-gray-500 disabled:hover:border-gray-200"
-                        title="Partilhar este chouriço"
-                        aria-label="Partilhar este texto com um link"
-                    >
-                        <Share2 size={24} aria-hidden="true" />
+                        {justCopied
+                            ? <Check size={24} aria-hidden="true" className="animate-carimbo" />
+                            : <Copy size={24} aria-hidden="true" />}
                     </button>
                 </div>
 
                 <OutputBox text={outputText} />
+
+                {outputText.length > 0 && (
+                    <div className="mt-6 text-center">
+                        <button
+                            onClick={handleShare}
+                            className="group text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-tuga-green transition-colors"
+                            aria-label="Partilhar este texto com um link"
+                        >
+                            Gostas do que te saiu?{' '}
+                            <span className="text-tuga-green underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
+                                Atira o link a um preguiçoso
+                            </span>{' '}
+                            <span className="inline-block group-hover:translate-x-1 transition-transform" aria-hidden="true">👉</span>
+                        </button>
+                    </div>
+                )}
             </div>
 
             <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} />
