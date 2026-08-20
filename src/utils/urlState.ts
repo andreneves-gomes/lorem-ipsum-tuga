@@ -47,5 +47,5 @@ export function decodeShareState(search: string): ShareState | null {
 
 /** A fresh 32-bit seed for a new generation. */
 export function randomSeed(): number {
-    return Math.floor(Math.random() * 0xffffffff) >>> 0;
+    return Math.floor(Math.random() * 0x100000000) >>> 0;
 }

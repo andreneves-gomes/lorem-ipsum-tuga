@@ -12,7 +12,8 @@
 /* Respect users who prefer reduced motion: kill the SIUUU shake and slide-in */
 @media (prefers-reduced-motion: reduce) {
   .animate-siuuu,
-  .animate-slide-up {
+  .animate-slide-up,
+  .animate-carimbo {
     animation: none !important;
   }
   * {

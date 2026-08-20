@@ -33,7 +33,7 @@ E ainda melhor: quando atiras o link para o WhatsApp, Twitter ou LinkedIn, o *pr
 ### 🎲 Botão "Surpreende-me"
 Sem paciência para escolher? Carrega no dado e deixa o destino decidir os parágrafos, a intensidade e as categorias. O que sai, sai — e é mesmo o que fica no ecrã.
 
-### ��️ O "Azeitómetro" (Slider de Intensidade)
+### 🎚️ O "Azeitómetro" (Slider de Intensidade)
 Controla o nível de "tuganess" do teu texto. Desde o discurso cuidado até à conversa de tasca às 3 da manhã:
 1. **Suave**: Seguro para mostrar à avó.
 2. **Equilibrado**: O típico "bitaite" de café.
