@@ -76,4 +76,16 @@ describe('TugaGenerator', () => {
         const someFoodAppears = dictionary.foodActions.some((p) => text.includes(p));
         expect(someFoodAppears).toBe(true);
     });
+
+    it('is deterministic: the same seed reproduces the exact same text', () => {
+        const a = gen.generate(5, 70, ALL_ON, 123456);
+        const b = gen.generate(5, 70, ALL_ON, 123456);
+        expect(a).toEqual(b);
+    });
+
+    it('produces different text for different seeds', () => {
+        const a = gen.generate(4, 70, ALL_ON, 1).join('\n');
+        const b = gen.generate(4, 70, ALL_ON, 2).join('\n');
+        expect(a).not.toEqual(b);
+    });
 });
