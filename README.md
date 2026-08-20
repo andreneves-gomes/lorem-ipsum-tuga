@@ -19,7 +19,7 @@ Inclui:
 
 ## ✨ Funcionalidades Épicas
 
-### �️ Filtros à la Carte (e que funcionam mesmo!)
+### 🎛️ Filtros à la Carte (e que funcionam mesmo!)
 Não és fã do Quim Barreiros? Estás de dieta e não queres ver francesinhas? Sem problema. Liga e desliga as categorias como quem escolhe o recheio do prego:
 - **🌟 Figuras Públicas**: Do CR7 à Cristina Ferreira. Desliga e o texto fica anónimo, como uma testemunha em tribunal.
 - **🗣️ Expressões Típicas**: Os "Eh pá" e "tás a ver?" da praxe. Sem eles, o texto fica mais seco que bacalhau por demolhar.
@@ -27,6 +27,8 @@ Não és fã do Quim Barreiros? Estás de dieta e não queres ver francesinhas? 
 
 ### 🔗 Cada Chouriço com a Sua Morada (Partilha)
 Gostas do disparate que te saiu? **Atira o link a um preguiçoso.** Cada geração fica guardada no endereço (URL) com uma semente própria — quem abrir o link vê *exatamente* o mesmo texto que tu. Reproduzível como a receita da avó, nem uma vírgula muda. No telemóvel abre a folha de partilha nativa; no computador copia o link para a área de transferência.
+
+E ainda melhor: quando atiras o link para o WhatsApp, Twitter ou LinkedIn, o *preview* mostra o próprio chouriço que geraste — uma imagem feita na hora (`/api/og`) com o teu texto lá dentro. Nada de imagem genérica.
 
 ### 🎲 Botão "Surpreende-me"
 Sem paciência para escolher? Carrega no dado e deixa o destino decidir os parágrafos, a intensidade e as categorias. O que sai, sai — e é mesmo o que fica no ecrã.
