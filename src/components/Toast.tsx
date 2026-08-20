@@ -15,6 +15,8 @@ export const Toast: React.FC<ToastProps> = ({ show, onClose }) => {
 
     return (
         <div 
+            role="status"
+            aria-live="polite"
             className={`
                 fixed bottom-10 left-1/2 -translate-x-1/2 
                 bg-tuga-red text-tuga-gold font-black text-lg uppercase px-8 py-3 rounded-full 
@@ -23,7 +25,7 @@ export const Toast: React.FC<ToastProps> = ({ show, onClose }) => {
                 ${show ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0 pointer-events-none'}
             `}
         >
-            Já está no bucho! (Copiado)
+            {show ? 'Já está no bucho! (Copiado)' : ''}
         </div>
     );
 };
