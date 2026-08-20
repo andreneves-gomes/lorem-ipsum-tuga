@@ -1,27 +1,60 @@
-import { dictionary, Dictionary } from '../data/dictionary';
+import { dictionary, GeneratorOptions } from '../data/dictionary';
+
+interface WorkingDictionary {
+    intros: string[];
+    subjects: string[];
+    actions: string[];
+    complements: string[];
+    connectors: string[];
+    endings: string[];
+    slang: string[];
+}
+
+const DEFAULT_OPTIONS: GeneratorOptions = {
+    celebrities: true,
+    expressions: true,
+    food: true,
+};
 
 export class TugaGenerator {
-    private data: Dictionary;
-
-    constructor() {
-        this.data = dictionary;
-    }
-
-    generate(numParagraphs: number, intensity: number): string[] {
+    generate(numParagraphs: number, intensity: number, options: GeneratorOptions = DEFAULT_OPTIONS): string[] {
         const paragraphs: string[] = [];
         for (let i = 0; i < numParagraphs; i++) {
-            paragraphs.push(this.createParagraph(intensity));
+            paragraphs.push(this.createParagraph(intensity, options));
         }
         return paragraphs;
     }
 
-    private createParagraph(intensity: number): string {
-        const numSentences = Math.floor(Math.random() * 4) + 3; // 3 to 6 sentences
-        let paragraph = "";
-        
-        // Create a temporary copy of data to avoid repetition within paragraph
-        let tempData = JSON.parse(JSON.stringify(this.data));
+    // Build a fresh, filtered word bank. "people" and general actions/complements are
+    // always present so the generator never runs out of words, whatever the options.
+    private buildBank(options: GeneratorOptions): WorkingDictionary {
+        return {
+            intros: options.expressions ? [...dictionary.intros] : [],
+            subjects: [
+                ...dictionary.people,
+                ...(options.celebrities ? dictionary.celebrities : []),
+            ],
+            actions: [
+                ...dictionary.actions,
+                ...(options.food ? dictionary.foodActions : []),
+            ],
+            complements: [
+                ...dictionary.complements,
+                ...(options.food ? dictionary.foodComplements : []),
+            ],
+            connectors: [...dictionary.connectors],
+            endings: options.expressions ? [...dictionary.endings] : [],
+            slang: options.expressions ? [...dictionary.slang] : [],
+        };
+    }
 
+    private createParagraph(intensity: number, options: GeneratorOptions): string {
+        const numSentences = Math.floor(Math.random() * 4) + 3; // 3 to 6 sentences
+
+        // Fresh bank per paragraph so getRandomAndRemove dedupes within the paragraph.
+        const tempData = this.buildBank(options);
+
+        let paragraph = "";
         for (let i = 0; i < numSentences; i++) {
             paragraph += this.createSentence(intensity, tempData) + " ";
         }
@@ -29,14 +62,14 @@ export class TugaGenerator {
         return paragraph.trim();
     }
 
-    private createSentence(intensity: number, tempData: Dictionary): string {
+    private createSentence(intensity: number, tempData: WorkingDictionary): string {
         const isComplex = Math.random() > 0.5;
         const useSlang = (intensity / 100) > Math.random();
         
         let sentence = "";
         
-        // 1. Intro
-        if (Math.random() > 0.3) {
+        // 1. Intro (only when expressions are enabled and available)
+        if (tempData.intros.length > 0 && Math.random() > 0.3) {
             sentence += this.getRandomAndRemove(tempData.intros) + " ";
         }
 
@@ -48,23 +81,24 @@ export class TugaGenerator {
             sentence += " " + this.getRandomAndRemove(tempData.connectors) + " " + this.buildCoreSentence(useSlang, tempData);
         }
 
-        // 4. Ending
-        if (Math.random() < (intensity / 100)) {
+        // 4. Ending (fall back to a full stop when no expressive endings are available)
+        if (tempData.endings.length > 0 && Math.random() < (intensity / 100)) {
             sentence += this.getRandomAndRemove(tempData.endings);
         } else {
             sentence += ".";
         }
 
-        // Capitalize first letter
+        // Trim any leading space (e.g. when the intro was skipped) and capitalize.
+        sentence = sentence.trimStart();
         sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
         
         return sentence;
     }
 
-    private buildCoreSentence(useSlang: boolean, tempData: Dictionary): string {
+    private buildCoreSentence(useSlang: boolean, tempData: WorkingDictionary): string {
         let s = this.getRandomAndRemove(tempData.subjects) + " ";
         
-        if (useSlang && Math.random() > 0.5) {
+        if (useSlang && tempData.slang.length > 0 && Math.random() > 0.5) {
             s += this.getRandomAndRemove(tempData.slang) + " "; 
         }
         
