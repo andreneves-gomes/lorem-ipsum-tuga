@@ -1,4 +1,4 @@
-import { dictionary, GeneratorOptions } from '../data/dictionary';
+import { dictionary, type GeneratorOptions } from '../data/dictionary.js';
 
 interface WorkingDictionary {
     intros: string[];
