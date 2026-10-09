@@ -1,4 +1,5 @@
 import React from 'react';
+import { Flag } from './Flag';
 
 interface OutputBoxProps {
     text: string[];
@@ -24,9 +25,7 @@ export const OutputBox: React.FC<OutputBoxProps> = ({ text }) => {
                 </div>
             )}
             
-            <div className="absolute bottom-3 right-4 text-2xl opacity-50 select-none pointer-events-none" aria-hidden="true">
-                🇵🇹
-            </div>
+            <Flag className="absolute bottom-3 right-4 w-8 h-6 opacity-50 select-none pointer-events-none" />
         </div>
     );
 };

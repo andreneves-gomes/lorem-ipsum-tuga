@@ -3,6 +3,7 @@ import { Header } from './components/Header';
 import { Controls } from './components/Controls';
 import { OutputBox } from './components/OutputBox';
 import { Toast } from './components/Toast';
+import { Flag } from './components/Flag';
 import { generator } from './utils/generator';
 import { encodeShareState, decodeShareState, randomSeed, ShareState } from './utils/urlState';
 import { Copy, Check, Dice5 } from 'lucide-react';
@@ -139,9 +140,7 @@ function App() {
             <div className="w-full max-w-3xl bg-white dark:bg-gray-900 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] p-6 md:p-12 border-t-8 border-t-tuga-green border-b-8 border-b-tuga-red relative overflow-hidden transition-colors duration-300">
                 
                 {/* Decorative Flag Strip */}
-                <div className="absolute top-4 right-4 text-4xl opacity-20 rotate-12 select-none pointer-events-none" aria-hidden="true">
-                    🇵🇹
-                </div>
+                <Flag className="absolute top-4 right-4 w-12 h-8 opacity-20 rotate-12 select-none pointer-events-none" />
 
                 <Header darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
 
@@ -167,7 +166,7 @@ function App() {
                             ${isAnimating ? 'animate-siuuu' : ''}
                         `}
                     >
-                        <span className="text-2xl group-hover:scale-125 transition-transform" aria-hidden="true">🇵🇹</span>
+                        <Flag className="w-8 h-6 group-hover:scale-125 transition-transform" />
                         {isAnimating ? "SIUUUUUUUU!" : "Gerar Texto"}
                     </button>
 
