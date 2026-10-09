@@ -4,6 +4,7 @@ interface WorkingDictionary {
     intros: string[];
     subjects: string[];
     actions: string[];
+    cheekyActions: string[];
     complements: string[];
     connectors: string[];
     endings: string[];
@@ -17,6 +18,8 @@ const DEFAULT_OPTIONS: GeneratorOptions = {
 };
 
 type Rng = () => number;
+
+const CELEBRITIES = new Set(dictionary.celebrities);
 
 // Small, fast, seedable PRNG. Same seed => same sequence, so a generated text can be
 // reproduced from a shareable link.
@@ -59,6 +62,7 @@ export class TugaGenerator {
                 ...dictionary.actions,
                 ...(options.food ? dictionary.foodActions : []),
             ],
+            cheekyActions: [...dictionary.cheekyActions],
             complements: [
                 ...dictionary.complements,
                 ...(options.food ? dictionary.foodComplements : []),
@@ -109,24 +113,40 @@ export class TugaGenerator {
             sentence += ".";
         }
 
-        // Trim any leading space (e.g. when the intro was skipped) and capitalize.
+        // Trim any leading space (e.g. when the intro was skipped) and capitalize,
+        // including right after a question intro ("Sabes que mais? O Toy...").
         sentence = sentence.trimStart();
         sentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+        sentence = sentence.replace(/\? (\p{Ll})/u, (_, c: string) => "? " + c.toUpperCase());
         
         return sentence;
     }
 
     private buildCoreSentence(useSlang: boolean, tempData: WorkingDictionary, rng: Rng): string {
-        let s = this.getRandomAndRemove(tempData.subjects, rng) + " ";
-        
+        const subject = this.getRandomAndRemove(tempData.subjects, rng);
+        let s = subject;
+
         if (useSlang && tempData.slang.length > 0 && rng() > 0.5) {
-            s += this.getRandomAndRemove(tempData.slang, rng) + " "; 
+            s += ", " + this.getRandomAndRemove(tempData.slang, rng) + ",";
         }
-        
-        s += this.getRandomAndRemove(tempData.actions, rng) + " ";
-        s += this.getRandomAndRemove(tempData.complements, rng);
+
+        const actionPools = CELEBRITIES.has(subject)
+            ? [tempData.actions]
+            : [tempData.actions, tempData.cheekyActions];
+        s += " " + this.pickFromPools(actionPools, rng);
+        s += " " + this.getRandomAndRemove(tempData.complements, rng);
         
         return s;
+    }
+
+    // Uniform pick across several lists, removing the chosen item from its list.
+    private pickFromPools(pools: string[][], rng: Rng): string {
+        let index = Math.floor(rng() * pools.reduce((sum, pool) => sum + pool.length, 0));
+        for (const pool of pools) {
+            if (index < pool.length) return pool.splice(index, 1)[0];
+            index -= pool.length;
+        }
+        return "";
     }
 
     private getRandomAndRemove(arr: string[], rng: Rng): string {

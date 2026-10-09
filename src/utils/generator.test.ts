@@ -48,12 +48,8 @@ describe('TugaGenerator', () => {
 
     it('excludes celebrities when "Figuras Públicas" is off', () => {
         const text = collect(50, { celebrities: false, expressions: true, food: true });
-        // Some names also live in the always-on complements (e.g. "com o Fernando Mendes"),
-        // so only assert on celebrities that are exclusive to the celebrity bank.
-        const complementText = dictionary.complements.join(' | ');
         for (const name of dictionary.celebrities) {
-            if (complementText.includes(name)) continue;
-            expect(text).not.toContain(name);
+            expect(text).not.toContain(name.replace(/^(o|a) /, ''));
         }
     });
 
@@ -87,5 +83,52 @@ describe('TugaGenerator', () => {
         const a = gen.generate(4, 70, ALL_ON, 1).join('\n');
         const b = gen.generate(4, 70, ALL_ON, 2).join('\n');
         expect(a).not.toEqual(b);
+    });
+
+    it('never pairs a real public figure with a cheeky action', () => {
+        const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        let text = '';
+        for (let seed = 0; seed < 400; seed++) {
+            text += gen.generate(5, 100, ALL_ON, seed).join(' ') + ' ';
+        }
+
+        const cheeky = dictionary.cheekyActions.map(escape).join('|');
+        for (const name of dictionary.celebrities) {
+            const pairing = new RegExp(`${escape(name)}(, [^,]+,)? (${cheeky})`, 'i');
+            expect(text).not.toMatch(pairing);
+        }
+        // Not vacuous: cheeky actions still happen to everyone else.
+        expect(dictionary.cheekyActions.some((a) => text.includes(a))).toBe(true);
+    });
+
+    it('keeps punctuation and spacing clean', () => {
+        let text = '';
+        for (let seed = 0; seed < 200; seed++) {
+            text += gen.generate(5, 100, ALL_ON, seed).join('\n') + '\n';
+        }
+        expect(text).not.toMatch(/ {2}| ,|,,|, [.!?]|\? \p{Ll}/u);
+    });
+});
+
+describe('dictionary', () => {
+    const lists = Object.entries(dictionary) as [string, string[]][];
+
+    it('has no duplicate entries across lists', () => {
+        const all = lists.flatMap(([, entries]) => entries);
+        expect(all.length).toBe(new Set(all).size);
+    });
+
+    it('has no stray whitespace', () => {
+        for (const [list, entries] of lists) {
+            for (const entry of entries) {
+                expect(entry, `${list}: "${entry}"`).toBe(entry.trim());
+                expect(entry, `${list}: "${entry}"`).not.toMatch(/ {2}/);
+            }
+        }
+    });
+
+    it('keeps endings and asides in the shape the generator expects', () => {
+        for (const ending of dictionary.endings) expect(ending).toMatch(/^, .+[!?]$/);
+        for (const aside of dictionary.slang) expect(aside).not.toMatch(/[,.!?]/);
     });
 });
