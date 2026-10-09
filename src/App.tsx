@@ -158,7 +158,7 @@ function App() {
                     <button 
                         onClick={handleGenerate}
                         className={`
-                            group relative px-8 py-4 rounded-full font-black text-lg uppercase tracking-wide
+                            group relative px-8 py-4 rounded-full font-black text-xl uppercase tracking-wide
                             bg-gradient-to-br from-tuga-red to-red-700 text-tuga-gold border-2 border-tuga-gold
                             shadow-[0_6px_0_#7f1d1d] active:shadow-[0_2px_0_#7f1d1d] active:translate-y-1
                             transition-all hover:-translate-y-1 hover:shadow-[0_10px_0_#7f1d1d]
@@ -172,7 +172,7 @@ function App() {
 
                     <button 
                         onClick={handleSurprise}
-                        className="px-8 py-4 rounded-full font-bold text-tuga-green border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all flex items-center gap-2"
+                        className="px-8 py-4 rounded-full font-bold text-tuga-green dark:text-tuga-green-bright border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all flex items-center gap-2"
                     >
                         <Dice5 size={24} aria-hidden="true" />
                         Surpreende-me
@@ -182,7 +182,7 @@ function App() {
                         onClick={handleCopy}
                         className={`p-4 rounded-xl border-2 transition-all bg-white dark:bg-gray-800
                             ${justCopied
-                                ? 'border-tuga-green text-tuga-green'
+                                ? 'border-tuga-green text-tuga-green dark:text-tuga-green-bright'
                                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-gold hover:border-tuga-gold hover:rotate-6'}`}
                         title="Copiar para a área de transferência"
                         aria-label="Copiar texto para a área de transferência"
@@ -199,11 +199,11 @@ function App() {
                     <div className="mt-6 text-center">
                         <button
                             onClick={handleShare}
-                            className="group text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-tuga-green transition-colors"
+                            className="group text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-tuga-green dark:hover:text-tuga-green-bright transition-colors"
                             aria-label="Partilhar este texto com um link"
                         >
                             Gostas do que te saiu?{' '}
-                            <span className="text-tuga-green underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
+                            <span className="text-tuga-green dark:text-tuga-green-bright underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
                                 Atira o link a um preguiçoso
                             </span>{' '}
                             <span className="inline-block group-hover:translate-x-1 transition-transform" aria-hidden="true">👉</span>

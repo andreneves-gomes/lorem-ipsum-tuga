@@ -12,7 +12,7 @@ export const OutputBox: React.FC<OutputBoxProps> = ({ text }) => {
             aria-live="polite"
         >
             {text.length === 0 ? (
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 font-semibold italic px-6 text-center">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-gray-400 font-semibold italic px-6 text-center">
                     Ainda não há chouriço nenhum. Carrega no botão, ó campeão.
                 </div>
             ) : (
