@@ -12,7 +12,9 @@ const COPY_MESSAGE = 'Já está no bucho! (Copiado)';
 const LINK_MESSAGE = 'Link copiado! Agora é só espalhar.';
 
 function App() {
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState(
+        () => typeof document === 'undefined' || document.documentElement.classList.contains('dark'),
+    );
     const [paragraphs, setParagraphs] = useState(3);
     const [intensity, setIntensity] = useState(50);
     const [options, setOptions] = useState({
@@ -29,12 +31,18 @@ function App() {
 
     // Dark Mode Effect
     useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        document.documentElement.classList.toggle('dark', darkMode);
     }, [darkMode]);
+
+    const toggleDarkMode = () => {
+        const next = !darkMode;
+        setDarkMode(next);
+        try {
+            localStorage.setItem('tuga-theme', next ? 'dark' : 'light');
+        } catch {
+            // Storage blocked (private mode): the toggle still works for this visit.
+        }
+    };
 
     // Reproduce a shared generation from the URL on first load (?p=..&s=..).
     useEffect(() => {
@@ -142,7 +150,7 @@ function App() {
                 {/* Decorative Flag Strip */}
                 <Flag className="absolute top-4 right-4 w-12 h-8 opacity-20 rotate-12 select-none pointer-events-none" />
 
-                <Header darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
+                <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
                 <Controls 
                     paragraphs={paragraphs} 
