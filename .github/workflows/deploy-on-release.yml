@@ -13,7 +13,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  verify:
+    uses: ./.github/workflows/ci.yml
+
   deploy:
+    needs: verify
     runs-on: ubuntu-latest
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -23,13 +27,13 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       # Hobby plans reject deploys whose git author isn't the account owner; ship without git metadata.
       - name: Strip git metadata
         run: rm -rf .git
 
       - name: Deploy to production
-        run: npx --yes vercel@62.1.0 deploy --prod --yes --token "$VERCEL_TOKEN"
+        run: npx --yes vercel@63.1.0 deploy --prod --yes --token "$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}

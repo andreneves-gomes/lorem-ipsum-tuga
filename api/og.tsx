@@ -2,12 +2,10 @@ import { ImageResponse } from '@vercel/og';
 import { generator } from '../src/utils/generator';
 import { decodeShareState } from '../src/utils/urlState';
 
-export const config = { runtime: 'edge' };
-
 // Renders a 1200x630 social-preview card. When the request carries a shared
 // generation (?p=..&s=..), it reproduces that exact text and shows a teaser,
 // so a link posted on WhatsApp/Twitter/LinkedIn previews the actual chouriço.
-export default function handler(req: Request) {
+export function GET(req: Request) {
     const { search } = new URL(req.url);
     const state = decodeShareState(search);
 
