@@ -38,7 +38,7 @@ export const Controls: React.FC<ControlsProps> = ({
         <div className="flex flex-col gap-8 mb-10">
             {/* Paragraph Counter */}
             <div className="flex flex-col items-center gap-4">
-                <label className="font-extrabold text-tuga-green uppercase tracking-wider text-sm" id="paragraphs-label">
+                <label className="font-extrabold text-tuga-green dark:text-tuga-green-bright uppercase tracking-wider text-sm" id="paragraphs-label">
                     Quantos parágrafos?
                 </label>
                 <div className="flex items-center gap-4 bg-white dark:bg-gray-800 p-2 rounded-full border-2 border-gray-100 dark:border-gray-700 shadow-inner">
@@ -70,7 +70,7 @@ export const Controls: React.FC<ControlsProps> = ({
             <div className="flex flex-col items-center gap-4 w-full max-w-md mx-auto">
                 <label
                     htmlFor="intensity-slider"
-                    className="font-extrabold text-tuga-green uppercase tracking-wider text-sm"
+                    className="font-extrabold text-tuga-green dark:text-tuga-green-bright uppercase tracking-wider text-sm"
                 >
                     Nível de Tuga:
                 </label>
@@ -84,7 +84,7 @@ export const Controls: React.FC<ControlsProps> = ({
                     aria-valuetext={getIntensityLabel(intensity)}
                     className="w-full h-3 bg-gradient-to-r from-tuga-green via-tuga-green to-tuga-red rounded-lg appearance-none cursor-pointer accent-tuga-gold"
                 />
-                <span className="font-bold text-tuga-red text-lg uppercase bg-white dark:bg-gray-800 border-2 border-tuga-gold px-4 py-1 rounded-full shadow-sm">
+                <span className="font-bold text-tuga-red dark:text-red-400 text-lg uppercase bg-white dark:bg-gray-800 border-2 border-tuga-gold px-4 py-1 rounded-full shadow-sm">
                     {getIntensityLabel(intensity)}
                 </span>
             </div>
@@ -101,7 +101,7 @@ export const Controls: React.FC<ControlsProps> = ({
                         className={`
                             flex items-center gap-3 px-5 py-3 rounded-xl border-2 cursor-pointer transition-all select-none font-bold text-sm
                             ${options[opt.key as keyof typeof options] 
-                                ? 'border-tuga-green text-tuga-green bg-green-50 dark:bg-green-900/20' 
+                                ? 'border-tuga-green text-tuga-green bg-green-50 dark:border-tuga-green-bright dark:text-tuga-green-bright dark:bg-green-900/20' 
                                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:border-tuga-green'}
                         `}
                     >
@@ -113,7 +113,7 @@ export const Controls: React.FC<ControlsProps> = ({
                         />
                         <div className={`
                             w-5 h-5 rounded border-2 flex items-center justify-center transition-colors
-                            peer-focus-visible:ring-2 peer-focus-visible:ring-tuga-gold peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-offset-gray-800
+                            peer-focus-visible:ring-2 peer-focus-visible:ring-tuga-green dark:peer-focus-visible:ring-tuga-gold peer-focus-visible:ring-offset-2 dark:peer-focus-visible:ring-offset-gray-800
                             ${options[opt.key as keyof typeof options] ? 'bg-tuga-red border-tuga-red' : 'bg-gray-100 border-gray-300 dark:bg-gray-700 dark:border-gray-600'}
                         `}>
                             {options[opt.key as keyof typeof options] && (

@@ -10,6 +10,8 @@ export default {
       colors: {
         tuga: {
           green: '#046A38',
+          // Brand green is ~2.5:1 on the dark card; this one passes AA there.
+          'green-bright': '#34D399',
           red: '#DA291C',
           gold: '#FFD700',
         }

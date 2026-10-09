@@ -2,11 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Visible focus ring for keyboard users (mouse clicks stay ring-free) */
+/* Visible focus ring for keyboard users (mouse clicks stay ring-free); gold is invisible on white */
 :focus-visible {
-  outline: 3px solid #FFD700;
+  outline: 3px solid #046A38;
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+.dark :focus-visible {
+  outline-color: #FFD700;
 }
 
 /* Respect users who prefer reduced motion: kill the SIUUU shake and slide-in */

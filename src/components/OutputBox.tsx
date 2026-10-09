@@ -1,4 +1,5 @@
 import React from 'react';
+import { Flag } from './Flag';
 
 interface OutputBoxProps {
     text: string[];
@@ -11,7 +12,7 @@ export const OutputBox: React.FC<OutputBoxProps> = ({ text }) => {
             aria-live="polite"
         >
             {text.length === 0 ? (
-                <div className="absolute inset-0 flex items-center justify-center text-gray-400 dark:text-gray-500 font-semibold italic px-6 text-center">
+                <div className="absolute inset-0 flex items-center justify-center text-gray-500 dark:text-gray-400 font-semibold italic px-6 text-center">
                     Ainda não há chouriço nenhum. Carrega no botão, ó campeão.
                 </div>
             ) : (
@@ -24,9 +25,7 @@ export const OutputBox: React.FC<OutputBoxProps> = ({ text }) => {
                 </div>
             )}
             
-            <div className="absolute bottom-3 right-4 text-2xl opacity-50 select-none pointer-events-none" aria-hidden="true">
-                🇵🇹
-            </div>
+            <Flag className="absolute bottom-3 right-4 w-8 h-6 opacity-50 select-none pointer-events-none" />
         </div>
     );
 };

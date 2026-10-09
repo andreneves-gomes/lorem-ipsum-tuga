@@ -56,7 +56,11 @@ export default defineConfig(({ isSsrBuild }) => ({
               ],
             },
             workbox: {
-              globPatterns: ['**/*.{js,css,html,svg,png,jpeg,ico,woff2}'],
+              // The OG image is for scrapers and manifest icons are added by the plugin; neither belongs in every visitor's first load.
+              globPatterns: ['**/*.{js,css,html,svg,woff2}'],
+              globIgnores: ['404.html', '404.css'],
+              // Single-route app: only "/" (with or without share params) falls back offline, so unknown paths still reach the real 404.
+              navigateFallbackAllowlist: [/^\/(\?.*)?$/],
             },
           }),
         ]),

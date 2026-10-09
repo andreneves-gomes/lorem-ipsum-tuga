@@ -3,15 +3,20 @@ import { Header } from './components/Header';
 import { Controls } from './components/Controls';
 import { OutputBox } from './components/OutputBox';
 import { Toast } from './components/Toast';
+import { Flag } from './components/Flag';
 import { generator } from './utils/generator';
 import { encodeShareState, decodeShareState, randomSeed, ShareState } from './utils/urlState';
 import { Copy, Check, Dice5 } from 'lucide-react';
 
 const COPY_MESSAGE = 'Já está no bucho! (Copiado)';
 const LINK_MESSAGE = 'Link copiado! Agora é só espalhar.';
+const COPY_BLOCKED_MESSAGE = 'O browser não deixou copiar. Está selecionado, copia à mão.';
+const LINK_BLOCKED_MESSAGE = 'Não deu para copiar. O link está na barra de endereço.';
 
 function App() {
-    const [darkMode, setDarkMode] = useState(true);
+    const [darkMode, setDarkMode] = useState(
+        () => typeof document === 'undefined' || document.documentElement.classList.contains('dark'),
+    );
     const [paragraphs, setParagraphs] = useState(3);
     const [intensity, setIntensity] = useState(50);
     const [options, setOptions] = useState({
@@ -28,12 +33,18 @@ function App() {
 
     // Dark Mode Effect
     useEffect(() => {
-        if (darkMode) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        document.documentElement.classList.toggle('dark', darkMode);
     }, [darkMode]);
+
+    const toggleDarkMode = () => {
+        const next = !darkMode;
+        setDarkMode(next);
+        try {
+            localStorage.setItem('tuga-theme', next ? 'dark' : 'light');
+        } catch {
+            // Storage blocked (private mode): the toggle still works for this visit.
+        }
+    };
 
     // Reproduce a shared generation from the URL on first load (?p=..&s=..).
     useEffect(() => {
@@ -102,6 +113,8 @@ function App() {
                 selection?.removeAllRanges();
                 selection?.addRange(range);
             }
+            setToastMessage(COPY_BLOCKED_MESSAGE);
+            setShowToast(true);
         }
     };
 
@@ -130,20 +143,19 @@ function App() {
             setToastMessage(LINK_MESSAGE);
             setShowToast(true);
         } catch {
-            // Clipboard unavailable — silently ignore.
+            setToastMessage(LINK_BLOCKED_MESSAGE);
+            setShowToast(true);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 md:p-8">
+        <main className="min-h-screen flex items-center justify-center p-4 md:p-8">
             <div className="w-full max-w-3xl bg-white dark:bg-gray-900 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] p-6 md:p-12 border-t-8 border-t-tuga-green border-b-8 border-b-tuga-red relative overflow-hidden transition-colors duration-300">
                 
                 {/* Decorative Flag Strip */}
-                <div className="absolute top-4 right-4 text-4xl opacity-20 rotate-12 select-none pointer-events-none" aria-hidden="true">
-                    🇵🇹
-                </div>
+                <Flag className="absolute top-4 right-4 w-12 h-8 opacity-20 rotate-12 select-none pointer-events-none" />
 
-                <Header darkMode={darkMode} toggleDarkMode={() => setDarkMode(!darkMode)} />
+                <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
 
                 <Controls 
                     paragraphs={paragraphs} 
@@ -159,7 +171,7 @@ function App() {
                     <button 
                         onClick={handleGenerate}
                         className={`
-                            group relative px-8 py-4 rounded-full font-black text-lg uppercase tracking-wide
+                            group relative px-8 py-4 rounded-full font-black text-xl uppercase tracking-wide
                             bg-gradient-to-br from-tuga-red to-red-700 text-tuga-gold border-2 border-tuga-gold
                             shadow-[0_6px_0_#7f1d1d] active:shadow-[0_2px_0_#7f1d1d] active:translate-y-1
                             transition-all hover:-translate-y-1 hover:shadow-[0_10px_0_#7f1d1d]
@@ -167,13 +179,13 @@ function App() {
                             ${isAnimating ? 'animate-siuuu' : ''}
                         `}
                     >
-                        <span className="text-2xl group-hover:scale-125 transition-transform" aria-hidden="true">🇵🇹</span>
+                        <Flag className="w-8 h-6 group-hover:scale-125 transition-transform" />
                         {isAnimating ? "SIUUUUUUUU!" : "Gerar Texto"}
                     </button>
 
                     <button 
                         onClick={handleSurprise}
-                        className="px-8 py-4 rounded-full font-bold text-tuga-green border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all flex items-center gap-2"
+                        className="px-8 py-4 rounded-full font-bold text-tuga-green dark:text-tuga-green-bright border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all flex items-center gap-2"
                     >
                         <Dice5 size={24} aria-hidden="true" />
                         Surpreende-me
@@ -183,7 +195,7 @@ function App() {
                         onClick={handleCopy}
                         className={`p-4 rounded-xl border-2 transition-all bg-white dark:bg-gray-800
                             ${justCopied
-                                ? 'border-tuga-green text-tuga-green'
+                                ? 'border-tuga-green text-tuga-green dark:text-tuga-green-bright'
                                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-gold hover:border-tuga-gold hover:rotate-6'}`}
                         title="Copiar para a área de transferência"
                         aria-label="Copiar texto para a área de transferência"
@@ -200,11 +212,11 @@ function App() {
                     <div className="mt-6 text-center">
                         <button
                             onClick={handleShare}
-                            className="group text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-tuga-green transition-colors"
+                            className="group text-sm font-semibold text-gray-500 dark:text-gray-400 hover:text-tuga-green dark:hover:text-tuga-green-bright transition-colors"
                             aria-label="Partilhar este texto com um link"
                         >
                             Gostas do que te saiu?{' '}
-                            <span className="text-tuga-green underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
+                            <span className="text-tuga-green dark:text-tuga-green-bright underline decoration-dotted underline-offset-4 group-hover:decoration-solid">
                                 Atira o link a um preguiçoso
                             </span>{' '}
                             <span className="inline-block group-hover:translate-x-1 transition-transform" aria-hidden="true">👉</span>
@@ -214,7 +226,7 @@ function App() {
             </div>
 
             <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} />
-        </div>
+        </main>
     )
 }
 

@@ -85,7 +85,7 @@ pnpm test
 ```
 
 ## 🤝 Como Contribuir
-Queres adicionar aquela expressão que o teu tio de Trás-os-Montes diz sempre?
+Queres adicionar aquela expressão que o teu tio de Trás-os-Montes diz sempre? Lê primeiro o [CONTRIBUTING.md](CONTRIBUTING.md) (voz do projeto e mensagens de commit).
 1. Faz um **Fork**.
 2. Vai ao `src/data/dictionary.ts` (sim, agora é TypeScript, respeitinho).
 3. Adiciona a tua pérola.
