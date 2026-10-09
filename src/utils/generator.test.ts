@@ -170,4 +170,11 @@ describe('dictionary', () => {
     it('dates the topical list so it gets reviewed', () => {
         expect(revistoEm).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
+
+    it('keeps the topical list small (the monthly agent must not bloat it)', () => {
+        expect(atualidade.intros.length).toBeLessThanOrEqual(6);
+        expect(atualidade.actions.length).toBeLessThanOrEqual(15);
+        expect(atualidade.complements.length).toBeLessThanOrEqual(8);
+        expect(atualidade.endings.length).toBeLessThanOrEqual(6);
+    });
 });
