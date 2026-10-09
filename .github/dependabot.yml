@@ -4,6 +4,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Must not be shorter than minimumReleaseAge in pnpm-workspace.yaml.
+    cooldown:
+      default-days: 3
     ignore:
       # Their Node build crashes rendering ("Dynamic require of fs"); api/og.test.tsx guards future versions.
       - dependency-name: "@vercel/og"
@@ -13,3 +16,5 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 3

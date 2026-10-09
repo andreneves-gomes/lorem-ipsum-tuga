@@ -1,3 +1,5 @@
+# Supply-chain guard: only resolve versions published at least 3 days ago (matches Dependabot's cooldown).
+minimumReleaseAge: 4320
 allowBuilds:
   esbuild: true
 onlyBuiltDependencies:
