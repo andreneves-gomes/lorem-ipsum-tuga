@@ -1,0 +1,32 @@
+name: Rever a atualidade
+
+on:
+  schedule:
+    - cron: '0 9 1 * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  lembrete:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Abrir issue se ainda não houver uma aberta
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          open=$(gh issue list --state open --search 'in:title "Rever a atualidade"' --json number --jq 'length')
+          if [ "$open" != "0" ]; then
+            echo "Já há uma issue aberta."
+            exit 0
+          fi
+          gh issue create \
+            --title "Rever a atualidade ($(date +%Y-%m))" \
+            --body "Hora de pôr o chouriço em dia: abre \`src/data/atualidade.ts\`.
+
+          - [ ] Tirar piadas que já ninguém percebe.
+          - [ ] Juntar 3 a 5 temas leves do mês (impostos, calor, filas, futebol, casas...).
+          - [ ] Nada de tragédias, crimes, guerras, mortes ou acusações a pessoas reais.
+          - [ ] Atualizar \`revistoEm\` e correr \`pnpm test\`."

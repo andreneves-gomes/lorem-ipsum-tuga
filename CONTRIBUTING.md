@@ -41,6 +41,14 @@ Vai a `src/data/dictionary.ts`. Antes de adicionar:
 - Ações com culpa ou crime (multas, fisco, bebedeiras) não podem calhar a figuras públicas reais.
 - Se mudares o dicionário, os links partilhados antigos passam a mostrar outro texto. Faz parte.
 
+### Atualidade
+
+As piadas do momento vivem em `src/data/atualidade.ts`, separadas do resto para serem fáceis de trocar. Todos os meses o workflow "Rever a atualidade" abre uma issue a lembrar.
+
+- Temas leves que toda a gente apanhou: impostos, calor fora de época, filas, futebol, casas pela hora da morte.
+- A piada é sobre a situação, não sobre uma pessoa real. Nada de tragédias, crimes, guerras ou mortes.
+- Tira o que já ninguém se lembra e atualiza `revistoEm`.
+
 ## Mensagens de commit
 
 Formato [Conventional Commits](https://www.conventionalcommits.org/), em português de Portugal, com acentos:
