@@ -10,6 +10,8 @@ import { Copy, Check, Dice5 } from 'lucide-react';
 
 const COPY_MESSAGE = 'Já está no bucho! (Copiado)';
 const LINK_MESSAGE = 'Link copiado! Agora é só espalhar.';
+const COPY_BLOCKED_MESSAGE = 'O browser não deixou copiar. Está selecionado, copia à mão.';
+const LINK_BLOCKED_MESSAGE = 'Não deu para copiar. O link está na barra de endereço.';
 
 function App() {
     const [darkMode, setDarkMode] = useState(
@@ -111,6 +113,8 @@ function App() {
                 selection?.removeAllRanges();
                 selection?.addRange(range);
             }
+            setToastMessage(COPY_BLOCKED_MESSAGE);
+            setShowToast(true);
         }
     };
 
@@ -139,12 +143,13 @@ function App() {
             setToastMessage(LINK_MESSAGE);
             setShowToast(true);
         } catch {
-            // Clipboard unavailable — silently ignore.
+            setToastMessage(LINK_BLOCKED_MESSAGE);
+            setShowToast(true);
         }
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 md:p-8">
+        <main className="min-h-screen flex items-center justify-center p-4 md:p-8">
             <div className="w-full max-w-3xl bg-white dark:bg-gray-900 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] p-6 md:p-12 border-t-8 border-t-tuga-green border-b-8 border-b-tuga-red relative overflow-hidden transition-colors duration-300">
                 
                 {/* Decorative Flag Strip */}
@@ -221,7 +226,7 @@ function App() {
             </div>
 
             <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} />
-        </div>
+        </main>
     )
 }
 
