@@ -1,6 +1,6 @@
 import { ImageResponse } from '@vercel/og';
-import { generator } from '../src/utils/generator';
-import { decodeShareState } from '../src/utils/urlState';
+import { generator } from '../src/utils/generator.js';
+import { decodeShareState } from '../src/utils/urlState.js';
 
 // Renders a 1200x630 social-preview card. When the request carries a shared
 // generation (?p=..&s=..), it reproduces that exact text and shows a teaser,

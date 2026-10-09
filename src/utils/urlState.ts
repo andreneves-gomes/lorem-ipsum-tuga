@@ -1,4 +1,4 @@
-import { GeneratorOptions } from '../data/dictionary';
+import type { GeneratorOptions } from '../data/dictionary.js';
 
 export interface ShareState {
     paragraphs: number;

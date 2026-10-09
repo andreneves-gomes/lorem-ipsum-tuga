@@ -1,0 +1,16 @@
+{
+  // Vercel runs api/ as unbundled Node ESM, so relative imports need explicit .js extensions.
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "jsx": "react-jsx",
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["api", "middleware.ts"],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+}
