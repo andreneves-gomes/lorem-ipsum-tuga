@@ -3,6 +3,7 @@
   "private": true,
   "version": "2.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.34.6",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build --ssr src/entry-server.tsx --outDir dist-ssr && vite build",

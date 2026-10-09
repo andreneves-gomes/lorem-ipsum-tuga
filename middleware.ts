@@ -1,7 +1,7 @@
 import { next } from '@vercel/edge';
 
 // Only the app's document route. Shared links look like /?p=..&s=..
-export const config = { matcher: '/' };
+export const config = { matcher: '/', runtime: 'nodejs' };
 
 // For shared links, swap the static OG/Twitter image for a dynamic one that
 // previews the actual generated text. Plain visits pass straight through.
