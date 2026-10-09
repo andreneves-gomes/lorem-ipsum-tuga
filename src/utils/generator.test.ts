@@ -1,8 +1,11 @@
 import { describe, it, expect } from 'vitest';
 import { TugaGenerator } from './generator';
 import { dictionary } from '../data/dictionary';
+import { atualidade } from '../data/atualidade';
 
 const gen = new TugaGenerator();
+const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const adjectiveForms = dictionary.slangAdjectives.flatMap((a) => a.split('|'));
 
 const ALL_ON = { celebrities: true, expressions: true, food: true };
 const ALL_OFF = { celebrities: false, expressions: false, food: false };
@@ -86,19 +89,46 @@ describe('TugaGenerator', () => {
     });
 
     it('never pairs a real public figure with a cheeky action', () => {
-        const escape = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         let text = '';
         for (let seed = 0; seed < 400; seed++) {
             text += gen.generate(5, 100, ALL_ON, seed).join(' ') + ' ';
         }
 
         const cheeky = dictionary.cheekyActions.map(escape).join('|');
+        const between = `(, [^,]+,| (${adjectiveForms.map(escape).join('|')}))?`;
         for (const name of dictionary.celebrities) {
-            const pairing = new RegExp(`${escape(name)}(, [^,]+,)? (${cheeky})`, 'i');
+            const pairing = new RegExp(`${escape(name)}${between} (${cheeky})`, 'i');
             expect(text).not.toMatch(pairing);
         }
         // Not vacuous: cheeky actions still happen to everyone else.
         expect(dictionary.cheekyActions.some((a) => text.includes(a))).toBe(true);
+    });
+
+    it('makes slang adjectives agree with feminine subjects', () => {
+        let text = '';
+        for (let seed = 0; seed < 400; seed++) {
+            text += gen.generate(5, 100, ALL_ON, seed).join(' ') + ' ';
+        }
+
+        const feminine = [...dictionary.people, ...dictionary.celebrities].filter((s) => /^(a|uma) /.test(s));
+        const masculineOnly = dictionary.slangAdjectives
+            .filter((a) => a.includes('|'))
+            .map((a) => a.split('|')[0]);
+        for (const subject of feminine) {
+            for (const adjective of masculineOnly) {
+                expect(text).not.toContain(`${subject} ${adjective} `);
+            }
+        }
+        // Not vacuous: bare adjectives do show up.
+        expect(adjectiveForms.some((a) => new RegExp(` ${escape(a)} `).test(text))).toBe(true);
+    });
+
+    it('mixes in the current topical jokes', () => {
+        let text = '';
+        for (let seed = 0; seed < 100; seed++) {
+            text += gen.generate(5, 100, ALL_ON, seed).join(' ') + ' ';
+        }
+        expect(atualidade.actions.some((a) => text.includes(a))).toBe(true);
     });
 
     it('keeps punctuation and spacing clean', () => {
@@ -111,7 +141,11 @@ describe('TugaGenerator', () => {
 });
 
 describe('dictionary', () => {
-    const lists = Object.entries(dictionary) as [string, string[]][];
+    const { revistoEm, ...topical } = atualidade;
+    const lists = [
+        ...Object.entries(dictionary),
+        ...Object.entries(topical).map(([k, v]) => [`atualidade.${k}`, v]),
+    ] as [string, string[]][];
 
     it('has no duplicate entries across lists', () => {
         const all = lists.flatMap(([, entries]) => entries);
@@ -128,7 +162,12 @@ describe('dictionary', () => {
     });
 
     it('keeps endings and asides in the shape the generator expects', () => {
-        for (const ending of dictionary.endings) expect(ending).toMatch(/^, .+[!?]$/);
+        for (const ending of [...dictionary.endings, ...atualidade.endings]) expect(ending).toMatch(/^, .+[!?]$/);
         for (const aside of dictionary.slang) expect(aside).not.toMatch(/[,.!?]/);
+        for (const adjective of dictionary.slangAdjectives) expect(adjective).toMatch(/^[^,|]+(\|[^,|]+)?$/);
+    });
+
+    it('dates the topical list so it gets reviewed', () => {
+        expect(revistoEm).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     });
 });

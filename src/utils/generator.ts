@@ -1,4 +1,5 @@
 import { dictionary, type GeneratorOptions } from '../data/dictionary.js';
+import { atualidade } from '../data/atualidade.js';
 
 interface WorkingDictionary {
     intros: string[];
@@ -9,6 +10,7 @@ interface WorkingDictionary {
     connectors: string[];
     endings: string[];
     slang: string[];
+    slangAdjectives: string[];
 }
 
 const DEFAULT_OPTIONS: GeneratorOptions = {
@@ -20,6 +22,12 @@ const DEFAULT_OPTIONS: GeneratorOptions = {
 type Rng = () => number;
 
 const CELEBRITIES = new Set(dictionary.celebrities);
+
+// "chanfrado|chanfrada": pick the form that agrees with the subject's article.
+function agree(adjective: string, subject: string): string {
+    const [masculine, feminine = masculine] = adjective.split('|');
+    return /^(a|uma) /.test(subject) ? feminine : masculine;
+}
 
 // Small, fast, seedable PRNG. Same seed => same sequence, so a generated text can be
 // reproduced from a shareable link.
@@ -53,23 +61,26 @@ export class TugaGenerator {
     // always present so the generator never runs out of words, whatever the options.
     private buildBank(options: GeneratorOptions): WorkingDictionary {
         return {
-            intros: options.expressions ? [...dictionary.intros] : [],
+            intros: options.expressions ? [...dictionary.intros, ...atualidade.intros] : [],
             subjects: [
                 ...dictionary.people,
                 ...(options.celebrities ? dictionary.celebrities : []),
             ],
             actions: [
                 ...dictionary.actions,
+                ...atualidade.actions,
                 ...(options.food ? dictionary.foodActions : []),
             ],
             cheekyActions: [...dictionary.cheekyActions],
             complements: [
                 ...dictionary.complements,
+                ...atualidade.complements,
                 ...(options.food ? dictionary.foodComplements : []),
             ],
             connectors: [...dictionary.connectors],
-            endings: options.expressions ? [...dictionary.endings] : [],
+            endings: options.expressions ? [...dictionary.endings, ...atualidade.endings] : [],
             slang: options.expressions ? [...dictionary.slang] : [],
+            slangAdjectives: options.expressions ? [...dictionary.slangAdjectives] : [],
         };
     }
 
@@ -126,8 +137,12 @@ export class TugaGenerator {
         const subject = this.getRandomAndRemove(tempData.subjects, rng);
         let s = subject;
 
-        if (useSlang && tempData.slang.length > 0 && rng() > 0.5) {
-            s += ", " + this.getRandomAndRemove(tempData.slang, rng) + ",";
+        if (useSlang && rng() > 0.5) {
+            if (tempData.slangAdjectives.length > 0 && rng() < 0.5) {
+                s += " " + agree(this.getRandomAndRemove(tempData.slangAdjectives, rng), subject);
+            } else if (tempData.slang.length > 0) {
+                s += ", " + this.getRandomAndRemove(tempData.slang, rng) + ",";
+            }
         }
 
         const actionPools = CELEBRITIES.has(subject)

@@ -11,6 +11,8 @@ export interface Dictionary {
     connectors: string[];
     endings: string[];
     slang: string[];
+    // "masculino|feminino" (or one invariant form), glued right after the subject.
+    slangAdjectives: string[];
 }
 
 export interface GeneratorOptions {
@@ -103,7 +105,8 @@ export const dictionary: Dictionary = {
         "e nisto", "e do nada", "mas atenção,", "e então", "e por causa disso", "e logo a seguir",
         "e mais tarde", "e no fim", "e o pior é que", "e para cúmulo", "e vai-se a ver", "e às tantas",
         "e por incrível que pareça", "e sem querer", "e na volta", "e vai daí", "e pumba", "e catrapum",
-        "e para ajudar à festa", "e como se não bastasse", "e escusado será dizer que", "e para variar"
+        "e para ajudar à festa", "e como se não bastasse", "e escusado será dizer que", "e para variar",
+        "e, claro está,", "e, surpresa das surpresas,", "e, como é tradição,", "e, pasme-se,"
     ],
     endings: [
         ", tás a ver?", ", hã?", ", carago!", ", pá!", ", mai nada!", ", espetáculo!",
@@ -113,7 +116,9 @@ export const dictionary: Dictionary = {
         ", tás a perceber a jogada?", ", que tourada!", ", lindo menino!", ", ai mãe!",
         ", valha-me Deus!", ", cum caneco!", ", impecável!", ", é obra!", ", estás lá!",
         ", granda narsa!", ", que barraca!", ", nunca vi nada assim!", ", é o que é!",
-        ", pronto!", ", é a vida!", ", está tudo dito!"
+        ", pronto!", ", é a vida!", ", está tudo dito!",
+        ", só que não!", ", Portugal no seu melhor!", ", grande novidade!", ", quem diria!",
+        ", ninguém estava à espera!", ", e ainda dizem que somos pessimistas!"
     ],
     // Asides that go between commas right after the subject, so they read right whatever the gender.
     slang: [
@@ -121,6 +126,14 @@ export const dictionary: Dictionary = {
         "à socapa", "à pala do cunhado", "na desportiva", "bué da rápido", "com uma ganda lata",
         "com cara de caso", "à tuga", "às três pancadas", "na brincadeira", "de mãos a abanar",
         "à última da hora", "em modo baldas", "num instante", "sem stress nenhum", "a trautear pimba",
-        "com o cachecol ao pescoço", "de chinelo no pé", "de fato de treino"
+        "com o cachecol ao pescoço", "de chinelo no pé", "de fato de treino",
+        "tipo", "pá", "com a pontualidade do costume", "com a eficiência habitual",
+        "com o entusiasmo de segunda-feira", "como manda a tradição", "sem ninguém pedir"
+    ],
+    slangAdjectives: [
+        "chanfrado|chanfrada", "marado|marada", "bacano|bacana", "porreiro|porreira", "fixe",
+        "todo pimpão|toda pimpona", "armado em esperto|armada em esperta", "todo lampeiro|toda lampeira",
+        "cheio de pinta|cheia de pinta", "todo janota|toda janota", "todo gingão|toda gingona",
+        "com a mania", "à rasca", "armado em turista|armada em turista", "todo contente|toda contente"
     ]
 };
