@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    ignore:
+      # Their Node build crashes rendering ("Dynamic require of fs"); api/og.test.tsx guards future versions.
+      - dependency-name: "@vercel/og"
+        versions: ["1.0.2", "1.0.3"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
