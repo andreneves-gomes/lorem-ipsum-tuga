@@ -1,0 +1,2 @@
+# The CSP in vercel.json pins a hash of index.html's inline script; CRLF would change it.
+index.html text eol=lf
