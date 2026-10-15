@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-PT" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link id="favicon" rel="icon" type="image/svg+xml" href="/favicons/galo.svg" />
+    <script>
+      // Random Tuga Favicon Logic
+      const icons = [
+        '/favicons/acordeao.svg', // Acordeão (Accordion)
+        '/favicons/bandeira.svg', // Bandeira (Flag)
+        '/favicons/bigode.svg',   // Bigode (Mustache)
+        '/favicons/galo.svg',     // Galo (Classic)
+        '/favicons/sardinha.svg', // Sardinha (Sardine)
+        '/favicons/vinho.svg'     // Vinho (Wine Glass)
+      ];
+      const randomIcon = icons[Math.floor(Math.random() * icons.length)];
+      document.getElementById('favicon').href = randomIcon;
+      // Dark is the default; only a saved "light" choice turns it off, before first paint.
+      try { if (localStorage.getItem('tuga-theme') === 'light') document.documentElement.classList.remove('dark'); } catch (e) {}
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#046A38" />
+    <title>404 · Esta página foi tratar de papéis | Lorem Ipsum Tuga</title>
+  </head>
+  <body>
+    <main class="min-h-screen flex items-center justify-center p-4 md:p-8">
+      <div class="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-3xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] dark:shadow-[0_10px_40px_-10px_rgba(0,0,0,0.5)] p-6 md:p-10 border-t-8 border-t-tuga-green border-b-8 border-b-tuga-red text-center text-gray-700 dark:text-gray-300">
+        <p class="text-xs md:text-sm font-bold uppercase tracking-[0.25em] text-gray-500 dark:text-gray-400">
+          Loja do Cidadão · Balcão do Chouriço
+        </p>
+
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 items-stretch">
+          <div class="rounded-2xl bg-gray-950 border-4 border-gray-800 px-4 py-5 flex flex-col justify-center" aria-hidden="true">
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-400">A ser atendido</p>
+            <p id="painel" class="mt-1 font-mono tabular-nums text-5xl md:text-6xl font-black text-amber-300">A391</p>
+            <p class="mt-2 text-sm text-gray-400">
+              Espera estimada: <span id="espera" class="font-semibold text-gray-200">3 horas</span>
+            </p>
+          </div>
+
+          <div class="relative rounded-xl bg-amber-50 text-gray-900 border-2 border-dashed border-gray-400 px-4 py-5 -rotate-2 shadow-md flex flex-col justify-center">
+            <p class="text-xs font-bold uppercase tracking-[0.3em] text-gray-500">A sua senha</p>
+            <p class="font-mono text-6xl md:text-7xl font-black text-tuga-red">A404</p>
+            <p class="mt-1 text-sm">Assunto: <strong>página não encontrada</strong></p>
+            <p id="emitida" class="text-xs text-gray-500">Emitida há bocadinho</p>
+            <p
+              id="carimbo"
+              hidden
+              class="absolute inset-0 m-auto h-fit w-fit rotate-[-14deg] rounded-xl border-[6px] border-tuga-green bg-amber-50/80 px-4 py-2 text-2xl md:text-3xl font-black uppercase text-tuga-green animate-carimbo"
+            >
+              É a sua vez!
+            </p>
+          </div>
+        </div>
+
+        <h1 class="mt-8 text-3xl md:text-4xl font-black uppercase tracking-tight text-tuga-red dark:text-red-400">
+          Esta página foi tratar de papéis e ainda não voltou.
+        </h1>
+        <p class="mt-3 text-lg">
+          Procuraste <strong id="caminho" class="break-all text-gray-900 dark:text-white">esta morada</strong>.
+          Segundo os nossos registos, isso fica <span id="destino">em Leiria (que não existe)</span>.
+        </p>
+
+        <figure class="mt-6 rounded-2xl bg-gray-50 dark:bg-gray-800 p-5 text-left">
+          <figcaption class="text-xs font-bold uppercase tracking-[0.25em] text-tuga-green dark:text-tuga-green-bright">
+            Desculpa oficial
+          </figcaption>
+          <blockquote id="desculpa" class="mt-2 text-lg italic text-gray-800 dark:text-gray-100">
+            O funcionário foi tomar um café e o sistema foi abaixo, como é tradição.
+          </blockquote>
+          <button
+            id="outra-desculpa"
+            type="button"
+            hidden
+            class="mt-3 text-sm font-semibold text-tuga-green dark:text-tuga-green-bright underline underline-offset-4"
+          >
+            Pedir outra desculpa
+          </button>
+        </figure>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-4">
+          <a
+            href="/"
+            class="px-8 py-4 rounded-full font-black text-lg uppercase tracking-wide bg-linear-to-br/srgb from-tuga-red to-red-700 text-tuga-gold border-2 border-tuga-gold shadow-[0_6px_0_#7f1d1d] hover:-translate-y-1 hover:shadow-[0_10px_0_#7f1d1d] transition-all"
+          >
+            Voltar ao gerador
+          </a>
+          <button
+            id="reclamar"
+            type="button"
+            hidden
+            class="px-6 py-4 rounded-full font-bold text-tuga-green dark:text-tuga-green-bright border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] transition-all"
+          >
+            📕 Livro de reclamações
+          </button>
+        </div>
+
+        <p id="balcao" class="mt-6 min-h-[1.5em] font-semibold text-gray-600 dark:text-gray-400" aria-live="polite"></p>
+      </div>
+    </main>
+    <script type="module" src="/src/nao-encontrado.ts"></script>
+  </body>
+</html>
