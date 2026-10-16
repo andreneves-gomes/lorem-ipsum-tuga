@@ -27,6 +27,7 @@ export const Controls: React.FC<ControlsProps> = ({
         if (val < 25) return "Suave";
         if (val < 50) return "Equilibrado";
         if (val < 75) return "Comó Milho";
+        if (val === 100) return "100% Virgem Extra 🫒";
         return "Azeiteiro";
     };
 
