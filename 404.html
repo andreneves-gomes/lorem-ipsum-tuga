@@ -21,7 +21,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#046A38" />
-    <title>404 · Esta página não existe, por isso enchemos chouriços | Lorem Ipsum Tuga</title>
+    <title>404 · Zé Povinho (1875–hoje): tudo na mesma | Lorem Ipsum Tuga</title>
   </head>
   <body>
     <main class="min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
@@ -34,65 +34,78 @@
         </svg>
 
         <div class="text-center">
-          <p id="quatro" aria-hidden="true" class="inline-block text-8xl md:text-9xl font-black text-tuga-red tracking-tighter leading-none drop-shadow-[4px_4px_0px_rgba(255,215,0,1)]">404</p>
-          <h1 class="mt-4 text-3xl md:text-4xl font-black uppercase tracking-tight text-gray-900 dark:text-white">
+          <p class="text-xs font-extrabold uppercase tracking-[0.25em] text-tuga-green dark:text-tuga-green-bright">
+            Edição Especial · De 1875 até hoje sem tirar nem pôr
+          </p>
+          <p id="quatro" aria-hidden="true" class="mt-2 inline-block text-7xl md:text-8xl font-black text-tuga-red tracking-tighter leading-none drop-shadow-[4px_4px_0px_rgba(255,215,0,1)]">404</p>
+          <h1 class="mt-3 text-2xl md:text-4xl font-black uppercase tracking-tight text-gray-900 dark:text-white">
             Esta página não existe.
           </h1>
-          <p class="mt-2 text-lg font-semibold text-gray-600 dark:text-gray-400 border-b-2 border-gray-200 dark:border-gray-700 inline-block pb-1">
-            Em 1875 já era assim, e hoje continua igual: enchemos chouriços por ela.
+          <p class="mt-2 text-base md:text-lg font-semibold text-gray-600 dark:text-gray-400">
+            Procuraste <strong id="caminho" class="break-all text-gray-900 dark:text-white">esta morada</strong>.
+            Em 1875 o Zé Povinho já cá estava à espera — e continua exatamente na mesma.
           </p>
         </div>
 
-        <figure class="mt-8 rounded-2xl border-2 border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/30 p-4 md:p-6 text-center shadow-inner">
+        <figure class="relative mt-6 rounded-2xl border-2 border-amber-400 dark:border-amber-600/70 bg-amber-50 dark:bg-gray-800/90 p-5 md:p-6 text-center shadow-inner">
+          <div class="mb-3 flex flex-wrap items-center justify-between gap-2 border-b border-amber-300 dark:border-gray-700 pb-2 text-[11px] font-bold uppercase tracking-widest text-gray-600 dark:text-gray-400">
+            <span>📰 <em>A Lanterna Mágica</em> · 8 de julho de 1875</span>
+            <span>Mais de <strong id="anos" class="text-tuga-red dark:text-red-400">151</strong> anos na mesma</span>
+          </div>
           <img
+            id="gravura"
             src="/ze-povinho-1875.png"
             width="740"
             height="313"
             alt="Gravura original de Rafael Bordalo Pinheiro (1875): Zé Povinho olha para um lado e para outro e fica como sempre, na mesma."
-            class="mx-auto w-full max-w-xl h-auto select-none dark:invert dark:opacity-90"
+            class="mx-auto w-full max-w-xl h-auto select-none cursor-pointer dark:invert dark:opacity-90"
+            title="Clica no Zé para ver o que mudou desde 1875"
           />
-          <figcaption class="mt-3 text-sm text-gray-700 dark:text-gray-300">
-            <span class="font-bold text-tuga-red dark:text-red-400">«Zé Povinho olha para um lado e para outro… e fica como sempre: na mesma.»</span>
-            <span class="block mt-1 text-xs text-gray-500 dark:text-gray-400">
-              Rafael Bordalo Pinheiro, <em>A Lanterna Mágica</em>, 1875 — passados mais de 150 anos, continuamos na mesma.
-            </span>
+          <figcaption class="mt-4">
+            <p class="text-base md:text-lg font-black text-tuga-red dark:text-red-400">
+              «Zé Povinho olha para um lado e para outro… e fica como sempre: na mesma.»
+            </p>
+            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              Desenho e legenda originais de Rafael Bordalo Pinheiro (1875). Nem precisámos de mexer.
+            </p>
           </figcaption>
+
+          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-left">
+            <div class="rounded-xl bg-white/80 dark:bg-gray-900/70 border border-amber-300/80 dark:border-gray-700 p-3">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider text-gray-500 dark:text-gray-400">🎩 Em 1875 (Fontes Pereira de Melo)</p>
+              <p id="antes" class="mt-1 text-sm font-bold text-gray-900 dark:text-gray-100">
+                Prometeram o caminho de ferro até à tua página.
+              </p>
+            </div>
+            <div class="rounded-xl bg-white/80 dark:bg-gray-900/70 border border-amber-300/80 dark:border-gray-700 p-3">
+              <p class="text-[11px] font-extrabold uppercase tracking-wider text-tuga-green dark:text-tuga-green-bright">📱 Hoje (Portugal Digital 5G)</p>
+              <p id="agora" class="mt-1 text-sm font-bold text-gray-900 dark:text-gray-100">
+                Criaram uma comissão, caiu o portal e ficaste com um 404.
+              </p>
+            </div>
+          </div>
+
+          <p id="carimbo" aria-hidden="true" class="mt-4 inline-block rotate-[-3deg] rounded-xl border-2 border-tuga-red px-3 py-1 text-xs md:text-sm font-black uppercase tracking-wider text-tuga-red dark:text-red-400 bg-white/90 dark:bg-gray-900/90 animate-carimbo">
+            Toma lá um manguito oficial
+          </p>
         </figure>
 
-        <dl class="mt-6 grid grid-cols-3 gap-3 text-center">
-          <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 px-2 py-3">
-            <dt class="text-[11px] md:text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Palavras enchidas</dt>
-            <dd id="palavras" class="mt-1 font-mono tabular-nums text-2xl md:text-3xl font-black text-tuga-green dark:text-tuga-green-bright">0</dd>
+        <div class="relative mt-5 bg-white dark:bg-gray-800 border-4 border-tuga-green rounded-2xl p-5 md:p-6 text-left shadow-inner">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs font-extrabold uppercase tracking-wider text-tuga-green dark:text-tuga-green-bright">
+            <span>Comunicado oficial para encher chouriços</span>
+            <span class="font-mono text-gray-500 dark:text-gray-400">
+              <span id="palavras">0</span> palavras · <span class="text-tuga-red dark:text-red-400">0 úteis</span> · <span id="azeite">0</span> ml de azeite
+            </span>
           </div>
-          <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 px-2 py-3">
-            <dt class="text-[11px] md:text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Informação útil</dt>
-            <dd class="mt-1 font-mono tabular-nums text-2xl md:text-3xl font-black text-tuga-red dark:text-red-400">0</dd>
-          </div>
-          <div class="rounded-2xl bg-gray-50 dark:bg-gray-800 px-2 py-3">
-            <dt class="text-[11px] md:text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Azeite gasto</dt>
-            <dd class="mt-1 font-mono tabular-nums text-2xl md:text-3xl font-black text-amber-500 dark:text-tuga-gold"><span id="azeite">0</span><span class="text-base"> ml</span></dd>
-          </div>
-        </dl>
-
-        <div class="relative mt-6 bg-white dark:bg-gray-800 border-4 border-tuga-green rounded-2xl p-6 md:p-8 min-h-[220px] text-left shadow-inner transition-colors duration-300">
-          <p id="chourico" class="text-lg leading-relaxed text-gray-800 dark:text-gray-200">Ouve lá, o estagiário foi procurar esta página ao arquivo morto e, como é tradição, voltou de mãos a abanar.</p>
-          <p id="carimbo" hidden aria-hidden="true" class="absolute right-4 bottom-10 md:right-8 rotate-[-12deg] rounded-xl border-4 border-tuga-red px-3 py-1 text-lg md:text-xl font-black uppercase tracking-wide text-tuga-red bg-white/85 dark:bg-gray-900/85 animate-carimbo">
-            Chouriço certificado
+          <p id="chourico" class="mt-2 text-base md:text-lg leading-relaxed text-gray-800 dark:text-gray-200">
+            Ouve lá, o estagiário foi procurar esta página ao arquivo morto de 1875 e, como é tradição, voltou de mãos a abanar.
           </p>
-          <svg viewBox="0 0 30 20" aria-hidden="true" focusable="false" class="absolute bottom-3 right-4 w-8 h-6 opacity-50 select-none pointer-events-none">
-            <rect width="30" height="20" rx="2" fill="#046A38" />
-            <path d="M12 0h16a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H12z" fill="#DA291C" />
-            <circle cx="12" cy="10" r="5" fill="none" stroke="#FFD700" stroke-width="1.6" />
-            <path d="M9.6 7.2h4.8v4a2.4 2.4 0 0 1-4.8 0z" fill="#DA291C" stroke="#fff" stroke-width="0.9" />
-          </svg>
+          <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            Última localização conhecida desta página: <strong id="destino" class="text-gray-700 dark:text-gray-300">em Leiria (que não existe)</strong>.
+          </p>
         </div>
 
-        <p class="mt-4 text-center text-gray-600 dark:text-gray-400">
-          Procuraste <strong id="caminho" class="break-all text-gray-900 dark:text-white">esta morada</strong>.
-          Segundo os nossos registos, fica <span id="destino">em Leiria (que não existe)</span>.
-        </p>
-
-        <div class="mt-8 flex flex-wrap justify-center gap-4">
+        <div class="mt-7 flex flex-wrap justify-center gap-4">
           <a
             href="/"
             class="group px-8 py-4 rounded-full font-black text-xl uppercase tracking-wide bg-linear-to-br/srgb from-tuga-red to-red-700 text-tuga-gold border-2 border-tuga-gold shadow-[0_6px_0_#7f1d1d] active:shadow-[0_2px_0_#7f1d1d] active:translate-y-1 transition-all hover:-translate-y-1 hover:shadow-[0_10px_0_#7f1d1d] flex items-center gap-3"
@@ -109,9 +122,9 @@
             id="encher"
             type="button"
             hidden
-            class="px-8 py-4 rounded-full font-bold text-tuga-green dark:text-tuga-green-bright border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all"
+            class="px-6 py-4 rounded-full font-bold text-tuga-green dark:text-tuga-green-bright border-2 border-tuga-green bg-white dark:bg-gray-800 shadow-[0_6px_0_#046A38] hover:-translate-y-1 hover:shadow-[0_10px_0_#046A38] active:translate-y-1 active:shadow-[0_2px_0_#046A38] transition-all"
           >
-            Encher mais um
+            Virar a página de 1875
           </button>
         </div>
 
