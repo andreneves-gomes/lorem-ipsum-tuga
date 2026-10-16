@@ -109,6 +109,28 @@ try {
 $('caminho').textContent = `«${caminho.length > 40 ? caminho.slice(0, 39) + '…' : caminho}»`;
 $('anos').textContent = String(Math.max(151, new Date().getFullYear() - 1875));
 
+// Easter eggs for iconic Portuguese missing things.
+const slug = caminho.toLowerCase();
+if (slug.includes('leiria')) {
+    CRONICAS.unshift([
+        'Em 1875 já ninguém conseguia apontar Leiria no mapa sem rir.',
+        'Tentaste abrir «/leiria» e deu 404. Fica oficialmente provado que Leiria não existe.',
+        'Mito confirmado pela ciência',
+    ]);
+} else if (slug.includes('sebastiao') || slug.includes('sebastião')) {
+    CRONICAS.unshift([
+        'D. Sebastião disse que ia ali a Alcácer Quibir e voltava já.',
+        'Ainda está nevoeiro no servidor. Volta numa manhã de sol.',
+        'À espera desde 1578',
+    ]);
+} else if (slug.includes('olivenca') || slug.includes('olivença')) {
+    CRONICAS.unshift([
+        'Em 1815, no Congresso de Viena, prometeram devolver Olivença.',
+        'Esta página é como Olivença: é nossa por direito, mas não aparece.',
+        'Olivença é nossa',
+    ]);
+}
+
 const folha = $('folha');
 const carimbo = $('carimbo');
 const antes = $('antes');
