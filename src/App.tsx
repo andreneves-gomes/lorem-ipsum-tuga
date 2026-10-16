@@ -35,12 +35,14 @@ function App() {
     const [lastGen, setLastGen] = useState<ShareState | null>(initial);
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState(COPY_MESSAGE);
+    const [toastKey, setToastKey] = useState(0);
     const [isAnimating, setIsAnimating] = useState(false);
     const [justCopied, setJustCopied] = useState(false);
     const flagClicks = useRef(0);
 
     const notify = (msg: string) => {
         setToastMessage(msg);
+        setToastKey((k) => k + 1);
         setShowToast(true);
     };
 
@@ -138,8 +140,7 @@ function App() {
             } else {
                 throw new Error('Clipboard API unavailable');
             }
-            setToastMessage(COPY_MESSAGE);
-            setShowToast(true);
+            notify(COPY_MESSAGE);
             setJustCopied(true);
             setTimeout(() => setJustCopied(false), 1200);
         } catch {
@@ -152,8 +153,7 @@ function App() {
                 selection?.removeAllRanges();
                 selection?.addRange(range);
             }
-            setToastMessage(COPY_BLOCKED_MESSAGE);
-            setShowToast(true);
+            notify(COPY_BLOCKED_MESSAGE);
         }
     };
 
@@ -179,11 +179,9 @@ function App() {
         // No Web Share API (typical on desktop): copy the link instead.
         try {
             await navigator.clipboard.writeText(shareUrl);
-            setToastMessage(LINK_MESSAGE);
-            setShowToast(true);
+            notify(LINK_MESSAGE);
         } catch {
-            setToastMessage(LINK_BLOCKED_MESSAGE);
-            setShowToast(true);
+            notify(LINK_BLOCKED_MESSAGE);
         }
     };
 
@@ -232,7 +230,7 @@ function App() {
 
                     <button 
                         onClick={handleCopy}
-                        className={`p-4 rounded-xl border-2 transition-all bg-white dark:bg-gray-800
+                        className={`p-4 rounded-xl border-2 transition-all active:scale-95 bg-white dark:bg-gray-800
                             ${justCopied
                                 ? 'border-tuga-green text-tuga-green dark:text-tuga-green-bright'
                                 : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:text-tuga-gold hover:border-tuga-gold hover:rotate-6'}`}
@@ -245,7 +243,7 @@ function App() {
                     </button>
                 </div>
 
-                <OutputBox text={outputText} />
+                <OutputBox text={outputText} animKey={lastGen?.seed ?? 0} />
 
                 {outputText.length > 0 && (
                     <div className="mt-6 text-center">
@@ -266,7 +264,7 @@ function App() {
 
             <About />
 
-            <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} />
+            <Toast show={showToast} onClose={() => setShowToast(false)} message={toastMessage} toastKey={toastKey} />
         </main>
     )
 }
