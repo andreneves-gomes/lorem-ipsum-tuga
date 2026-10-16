@@ -167,6 +167,11 @@ function mostrarCronica(animar: boolean) {
     }
 
     if (animar) {
+        for (const el of [antes, agora]) {
+            el.classList.remove('animate-slide-up');
+            void el.offsetWidth;
+            el.classList.add('animate-slide-up');
+        }
         quatro.classList.remove('animate-siuuu');
         carimbo.classList.remove('animate-carimbo');
         void quatro.offsetWidth;
