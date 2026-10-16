@@ -1,0 +1,87 @@
+.ze-corpo {
+  transform-box: view-box;
+  transform-origin: 100px 240px;
+  animation: ze-respira 3s ease-in-out infinite;
+}
+
+/* The fist pivots on the elbow; the other hand slaps the bicep. */
+.ze-antebraco {
+  transform-box: view-box;
+  transform-origin: 172px 152px;
+}
+
+.ze-mao {
+  transform-box: view-box;
+  transform-origin: 156px 154px;
+}
+
+.ze-toma .ze-antebraco {
+  animation: ze-manguito 0.9s ease-in-out;
+}
+
+.ze-toma .ze-mao {
+  animation: ze-palmada 0.9s ease-in-out;
+}
+
+@keyframes ze-respira {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.02); }
+}
+
+@keyframes ze-manguito {
+  0% { transform: rotate(30deg); }
+  35% { transform: rotate(-12deg); }
+  50% { transform: rotate(6deg); }
+  65% { transform: rotate(-4deg); }
+  100% { transform: rotate(0); }
+}
+
+@keyframes ze-palmada {
+  0%, 100% { transform: translate(0, 0); }
+  35% { transform: translate(5px, -4px); }
+}
+
+.bolha::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 30%;
+  width: 16px;
+  height: 16px;
+  background: inherit;
+  transform: rotate(45deg);
+}
+
+.pisca {
+  animation: pisca 1s steps(2, start) infinite;
+}
+
+@keyframes pisca {
+  to { visibility: hidden; }
+}
+
+.ticker {
+  display: inline-block;
+  padding-left: 1rem;
+  animation: ticker 40s linear infinite;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ze-corpo,
+  .ze-toma .ze-antebraco,
+  .ze-toma .ze-mao,
+  .pisca {
+    animation: none;
+  }
+
+  .ticker {
+    animation: none;
+    padding-left: 0;
+    white-space: normal;
+  }
+}
