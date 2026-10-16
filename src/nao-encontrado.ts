@@ -1,24 +1,11 @@
 import { inject } from '@vercel/analytics';
-import { generator } from './utils/generator';
 import './index.css';
-import './nao-encontrado.css';
 
 inject();
 
 const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
-const pick = <T>(list: T[]): T => list[Math.floor(Math.random() * list.length)];
-const calmo = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const DESTINOS = [
-    'em Leiria (que não existe)',
-    'no IC19 à hora de ponta',
-    'no aeroporto novo (previsto para 2037)',
-    'na gaveta de um funcionário que está de férias desde agosto',
-    'num T0 a 1500 euros por mês',
-    'na fila da Segurança Social, desde 2019',
-    'à espera que o D. Sebastião traga o servidor num dia de nevoeiro',
-];
-
+// 1875 (Bordalo Pinheiro) vs Today: why the page isn't here, and why nothing ever changes.
 const CRONICAS: Array<[string, string, string]> = [
     [
         'Prometeram o caminho de ferro até à tua página.',
@@ -50,6 +37,66 @@ const CRONICAS: Array<[string, string, string]> = [
         'Inauguraram este URL em PowerPoint, mas esqueceram-se de fazer a página.',
         'Obra adjudicada ao primo',
     ],
+    [
+        'O paquete para o Brasil partiu sem o despacho e ninguém deu por isso.',
+        'O deploy foi numa sexta-feira às 18h59 e a equipa já estava na imperial.',
+        'Quem vier atrás que feche a porta',
+    ],
+    [
+        'As obras de Santa Engrácia levavam séculos e nunca mais tinham fim.',
+        'O novo aeroporto abre em 2037 — e esta página logo a seguir.',
+        'Prazo indicativo (século XXI)',
+    ],
+    [
+        'Pediam uma cunha ao senhor deputado da Regeneração para desencalhar o papel.',
+        'Tens de conhecer o primo do gajo de IT que tem a password do servidor.',
+        'Sem cunha não há página',
+    ],
+    [
+        'O telégrafo avariou porque choveu no Rossio.',
+        'A cloud foi abaixo porque alguém desligou a tripla para ligar o aquecedor.',
+        'Tecnologia de ponta',
+    ],
+    [
+        'O amanuense saiu às onze para almoçar cozido e só voltou na terça-feira.',
+        'O servidor entrou em «pausa para bica» e deixou um bilhete no ecrã.',
+        'Já volto (de certeza)',
+    ],
+    [
+        'Juravam que D. Sebastião vinha aí num cavalo branco resolver a crise.',
+        'Juram que a Inteligência Artificial resolve isto no próximo sprint.',
+        'Esperar sentado em Alcácer Quibir',
+    ],
+    [
+        'Mandaram fazer um inquérito real em papel selado de trinta réis.',
+        'Abriram um ticket em Jira com prioridade «Quando Houver Tempo».',
+        'Arquivado na gaveta do fundo',
+    ],
+    [
+        'O barco a vapor do Tejo ficou preso no lodo do Cais do Sodré.',
+        'O teu pedido ficou preso na Segunda Circular atrás de um TVDE em segunda fila.',
+        'Mais cinco minutinhos',
+    ],
+    [
+        'Vendiam cautelas da Lotaria da Misericórdia para tapar o buraco do orçamento.',
+        'Raspaste uma raspadinha e saiu-te este 404 sem direito a reembolso.',
+        'Tente novamente na próxima encarnação',
+    ],
+    [
+        'O comboio do Norte parou no Entroncamento porque faltava carvão.',
+        'O pacote de rede parou em Leiria e descobriu que Leiria não existe.',
+        'Fim de linha',
+    ],
+    [
+        'O regedor da freguesia trancou a repartição e levou a chave para a vindima.',
+        'O administrador do sistema foi passar a ponte ao Algarve e levou o portátil.',
+        'Férias são sagradas',
+    ],
+    [
+        'Bordalo desenhava o Zé de braços abertos a olhar para o vazio.',
+        'Tu olhas para este 404, o Zé olha para ti, e ficamos todos na mesma.',
+        '151 anos de consistência',
+    ],
 ];
 
 // The address the visitor typed, shown as text (never as HTML).
@@ -60,88 +107,55 @@ try {
     // Malformed escape: show it as typed.
 }
 $('caminho').textContent = `«${caminho.length > 40 ? caminho.slice(0, 39) + '…' : caminho}»`;
-$('destino').textContent = pick(DESTINOS);
 $('anos').textContent = String(Math.max(151, new Date().getFullYear() - 1875));
 
-const chourico = $('chourico');
+const folha = $('folha');
 const carimbo = $('carimbo');
 const antes = $('antes');
 const agora = $('agora');
 const gravura = $('gravura');
-const palavras = $('palavras');
-const azeite = $('azeite');
 const estado = $('estado');
 const quatro = $('quatro');
-const encher = $<HTMLButtonElement>('encher');
+const virar = $<HTMLButtonElement>('virar');
+const voltarTexto = $('voltar-texto');
 
-let cronicaIdx = 0;
-let total = 0;
-let timer = 0;
+const total = CRONICAS.length;
+let idx = 0;
 
-const contar = (texto: string) => texto.split(/\s+/).filter(Boolean).length;
-const mostrarContas = (extra: number) => {
-    palavras.textContent = String(total + extra);
-    azeite.textContent = String((total + extra) * 3);
-};
+function mostrarCronica(animar: boolean) {
+    const [ontem, hoje, selo] = CRONICAS[idx % total];
+    const num = (idx % total) + 1;
+    idx++;
 
-function rodarCronica() {
-    const [ontem, hoje, selo] = CRONICAS[cronicaIdx % CRONICAS.length];
-    cronicaIdx++;
     antes.textContent = ontem;
     agora.textContent = hoje;
     carimbo.textContent = selo;
-    carimbo.classList.remove('animate-carimbo');
-    void carimbo.offsetWidth;
-    carimbo.classList.add('animate-carimbo');
-    $('destino').textContent = pick(DESTINOS);
-}
+    folha.textContent = `Crónica ${num} de ${total}`;
 
-// Types a fresh chouriço letter by letter; the word count climbs, useful information stays at zero.
-function encherChourico() {
-    window.clearTimeout(timer);
-    encher.disabled = true;
-    quatro.classList.remove('animate-siuuu');
-    void quatro.offsetWidth; // restart the animation
-    quatro.classList.add('animate-siuuu');
-    rodarCronica();
+    const prox = (idx % total) + 1;
+    virar.textContent =
+        idx >= total
+            ? `📰 Recomeçar as crónicas (${prox}/${total})`
+            : `📰 Virar a página de 1875 (${prox}/${total})`;
 
-    const frases = generator
-        .generate(1, 80)[0]
-        .replace(/([.!?])\s+(?=\p{Lu})/gu, '$1\n')
-        .split('\n');
-    const texto = frases.slice(0, 2).join(' ');
-    const terminar = () => {
-        chourico.classList.remove('a-escrever');
-        chourico.textContent = texto;
-        total += contar(texto);
-        mostrarContas(0);
-        estado.textContent = `Crónica de 1875 atualizada. ${total} palavras enchidas, zero úteis.`;
-        encher.disabled = false;
-    };
-
-    if (calmo) {
-        terminar();
-        return;
+    if (idx === 5) {
+        voltarTexto.textContent = 'Já me fartei, leva-me ao gerador';
+    } else if (idx >= 10) {
+        voltarTexto.textContent = 'Chega de 1875, quero encher chouriços!';
     }
 
-    let i = 0;
-    chourico.textContent = '';
-    chourico.classList.add('a-escrever');
-    const passo = () => {
-        i = Math.min(texto.length, i + 1 + Math.floor(Math.random() * 3));
-        chourico.textContent = texto.slice(0, i);
-        mostrarContas(contar(chourico.textContent));
-        if (i >= texto.length) {
-            terminar();
-            return;
-        }
-        // Pause a little longer after punctuation, like someone thinking of the next excuse.
-        timer = window.setTimeout(passo, /[,.!?]$/.test(chourico.textContent) ? 220 : 24);
-    };
-    timer = window.setTimeout(passo, 350);
+    if (animar) {
+        quatro.classList.remove('animate-siuuu');
+        carimbo.classList.remove('animate-carimbo');
+        void quatro.offsetWidth;
+        quatro.classList.add('animate-siuuu');
+        carimbo.classList.add('animate-carimbo');
+    }
+
+    estado.textContent = `Crónica ${num} de ${total}: Em 1875, ${ontem} Hoje, ${hoje}`;
 }
 
-encher.hidden = false;
-encher.addEventListener('click', encherChourico);
-gravura.addEventListener('click', encherChourico);
-encherChourico();
+virar.hidden = false;
+virar.addEventListener('click', () => mostrarCronica(true));
+gravura.addEventListener('click', () => mostrarCronica(true));
+mostrarCronica(false);
